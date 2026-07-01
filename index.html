@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>If You Could Go Back — Polaris</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,900;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:     #080808;
+      --card:   #131313;
+      --border: rgba(255,255,255,0.07);
+      --text:   rgba(255,255,255,0.88);
+      --soft:   rgba(255,255,255,0.48);
+      --muted:  rgba(255,255,255,0.22);
+      --gold:   #d4a843;
+      --green:  #34d399;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .w { max-width: 560px; margin: 0 auto; padding: 0 22px; }
+
+    .r { opacity: 0; transform: translateY(14px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .r.on { opacity: 1; transform: none; }
+    .d1 { transition-delay: 0.12s; }
+    .d2 { transition-delay: 0.24s; }
+    .d3 { transition-delay: 0.36s; }
+    .d4 { transition-delay: 0.48s; }
+
+    /* ── PAGE 1 ── */
+    .page1 {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 80px 22px 64px;
+      max-width: 560px; margin: 0 auto;
+    }
+
+    .kicker {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 28px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .kicker::before { content:''; width: 22px; height: 1px; background: var(--gold); opacity: 0.45; }
+
+    .headline {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(36px, 8.5vw, 64px);
+      font-weight: 900; line-height: 1.06;
+      letter-spacing: -0.025em; color: #fff;
+      margin-bottom: 28px;
+    }
+    .headline em { font-style: italic; color: var(--gold); }
+
+    .intro {
+      font-size: clamp(15px, 2.2vw, 17px);
+      color: var(--soft); line-height: 1.85;
+      margin-bottom: 36px; max-width: 520px;
+    }
+    .intro strong { color: var(--text); font-weight: 600; }
+
+    .memories { display: flex; flex-direction: column; gap: 8px; margin-bottom: 40px; }
+    .memory {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px 18px;
+      display: flex; gap: 12px; align-items: flex-start;
+    }
+    .memory-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    .memory-text { font-size: 14px; color: var(--soft); line-height: 1.65; }
+    .memory-text strong { color: var(--text); font-weight: 600; display: block; margin-bottom: 3px; }
+
+    .scroll-hint {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .arrow { color: var(--gold); font-size: 16px; animation: dip 1.8s ease infinite; }
+    @keyframes dip { 0%,100%{transform:translateY(0)} 55%{transform:translateY(4px)} }
+
+    hr { border: none; border-top: 1px solid var(--border); }
+
+    /* ── PAGE 2 ── */
+    .page2 { padding: 64px 22px 72px; max-width: 560px; margin: 0 auto; }
+
+    .h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(26px, 5.5vw, 40px);
+      font-weight: 900; line-height: 1.15;
+      letter-spacing: -0.02em; color: #fff; margin-bottom: 16px;
+    }
+    .h2 em { font-style: italic; color: var(--gold); }
+
+    .sub {
+      font-size: 15px; color: var(--soft);
+      line-height: 1.8; margin-bottom: 28px;
+    }
+    .sub strong { color: var(--text); font-weight: 600; }
+
+    .form-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 18px; padding: 26px 22px;
+    }
+
+    .form-what { display: flex; flex-direction: column; gap: 8px; margin-bottom: 22px; }
+    .form-q {
+      font-size: 13px; color: var(--soft);
+      display: flex; gap: 9px; align-items: flex-start; line-height: 1.6;
+    }
+    .form-q::before { content:'→'; color: var(--gold); flex-shrink: 0; font-weight: 700; font-size: 12px; margin-top: 1px; }
+
+    .time-tag {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(52,211,153,0.07); border: 1px solid rgba(52,211,153,0.18);
+      border-radius: 20px; padding: 4px 12px;
+      font-size: 11px; font-weight: 700; color: var(--green); margin-bottom: 18px;
+    }
+
+    .cta {
+      display: flex; align-items: center; justify-content: center;
+      width: 100%; background: var(--gold); color: #080808;
+      border: none; border-radius: 50px; padding: 15px;
+      font-size: 15px; font-weight: 700; cursor: pointer;
+      font-family: 'Inter', sans-serif; text-decoration: none;
+      transition: transform 0.15s, box-shadow 0.15s; margin-bottom: 12px;
+    }
+    .cta:hover { transform: translateY(-2px); box-shadow: 0 6px 22px rgba(212,168,67,0.28); }
+
+    .note { font-size: 12px; color: var(--muted); text-align: center; line-height: 1.7; }
+    .note strong { color: var(--soft); }
+
+    .footer {
+      border-top: 1px solid var(--border); padding: 18px 22px;
+      display: flex; justify-content: space-between; align-items: center;
+      max-width: 560px; margin: 0 auto;
+    }
+    .footer-left { display: flex; align-items: center; gap: 6px; }
+    .f-star { color: var(--gold); font-size: 13px; }
+    .f-name { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.6); letter-spacing: 0.1em; }
+    .f-right { font-size: 11px; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+<!-- ════ PAGE 1 ════ -->
+<div class="page1">
+  <div class="kicker r">A question worth sitting with</div>
+
+  <h1 class="headline r d1">
+    If you could go<br/>back and change<br/><em>one thing</em> —
+  </h1>
+
+  <p class="intro r d2">
+    Not your marks. Not your college. Something deeper.<br/>
+    <strong>The version of you that walked into the world — was there something missing that nobody had thought to give you?</strong>
+  </p>
+
+  <div class="memories r d3">
+    <div class="memory">
+      <div class="memory-icon">🕰️</div>
+      <div class="memory-text">
+        <strong>Think back to your younger self</strong>
+        The you at 14, 16, 18 — eager, capable, but quietly unsure of things that had nothing to do with what you'd studied.
+      </div>
+    </div>
+    <div class="memory">
+      <div class="memory-icon">💭</div>
+      <div class="memory-text">
+        <strong>The confidence you had to find the hard way</strong>
+        Speaking up in a room. Handling someone who doubted you. Knowing how to carry yourself when everything felt unfamiliar.
+      </div>
+    </div>
+    <div class="memory">
+      <div class="memory-icon">🌱</div>
+      <div class="memory-text">
+        <strong>The skill nobody thought to teach you</strong>
+        Something that would have changed how you walked into rooms, handled people, understood yourself — years before you needed it.
+      </div>
+    </div>
+    <div class="memory">
+      <div class="memory-icon">✨</div>
+      <div class="memory-text">
+        <strong>The moment you wish someone had seen you differently</strong>
+        Not your grades. You — what you were curious about, what made you try harder, what you were becoming.
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint r d4">
+    <span class="arrow">↓</span>
+    <span>Share what you remember</span>
+  </div>
+</div>
+
+<hr/>
+
+<!-- ════ PAGE 2 ════ -->
+<div class="page2">
+  <h2 class="h2 r">
+    Your past self<br/>has something<br/><em>important to say.</em>
+  </h2>
+
+  <p class="sub r d1">
+    We're collecting honest memories from people at different stages of life — early career, mid-career, students — about what they wish had been different. <strong>Not opinions. Real memories. The specific moments that still stay with you.</strong>
+  </p>
+
+  <div class="form-card r d2">
+    <div class="time-tag">⏱ Under 3 minutes</div>
+
+    <div class="form-what">
+      <div class="form-q">One memory of feeling unprepared — not for an exam, but for life itself</div>
+      <div class="form-q">One thing you wish someone had helped you build in yourself, much earlier</div>
+      <div class="form-q">If you could go back and change one thing about how you were prepared — what would it be</div>
+      <div class="form-q">What you noticed about people who seemed more ready than you — what was actually different about them</div>
+      <div class="form-q">Whether you'd be open to talking about this more — no pressure either way</div>
+    </div>
+
+    <a href="https://form.typeform.com/to/ciQoVDOk" target="_blank" class="cta">
+      Share My Story →
+    </a>
+
+    <div class="note">
+      No product. No pitch. Just an honest conversation.<br/>
+      <strong>Someone from our team</strong> will personally reach out if you'd like to go deeper.
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-left">
+    <span class="f-star">✦</span>
+    <span class="f-name">POLARIS</span>
+  </div>
+  <div class="f-right">Listening before building.</div>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting) { e.target.classList.add('on'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -16px 0px' });
+  document.querySelectorAll('.r').forEach(el => obs.observe(el));
+  document.querySelectorAll('.page1 .r').forEach((el,i) =>
+    setTimeout(() => el.classList.add('on'), 150 + i * 140));
+</script>
+</body>
+</html>
