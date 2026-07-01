@@ -3,688 +3,576 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Polaris — Every Child is More Than Their Marks</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <title>You Were Ready. Just Not For This. — Polaris</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --ink:       #0d0d0d;
-      --ink-soft:  #3d3d3d;
-      --ink-muted: #7a7a7a;
-      --paper:     #faf8f4;
-      --paper-mid: #f0ece4;
-      --gold:      #c8922a;
-      --gold-light:#f0d98a;
-      --green:     #2d6a4f;
-      --green-light:#e8f4ed;
-      --rule:      rgba(0,0,0,0.1);
+      --bg:           #080808;
+      --bg-raised:    #0f0f0f;
+      --bg-card:      #141414;
+      --border:       rgba(255,255,255,0.07);
+      --border-soft:  rgba(255,255,255,0.04);
+      --text:         rgba(255,255,255,0.9);
+      --text-soft:    rgba(255,255,255,0.52);
+      --text-muted:   rgba(255,255,255,0.26);
+      --gold:         #d4a843;
+      --gold-bright:  #efc45a;
+      --gold-dim:     rgba(212,168,67,0.08);
+      --green:        #34d399;
+      --green-dim:    rgba(52,211,153,0.08);
+      --rule:         rgba(255,255,255,0.06);
     }
 
     html { scroll-behavior: smooth; }
-
     body {
-      background: var(--paper);
-      color: var(--ink);
+      background: var(--bg);
+      color: var(--text);
       font-family: 'Inter', system-ui, sans-serif;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
-    /* ── REVEAL ANIMATION ── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
-    }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-    .reveal-delay-1 { transition-delay: 0.15s; }
-    .reveal-delay-2 { transition-delay: 0.3s; }
-    .reveal-delay-3 { transition-delay: 0.45s; }
-
-    /* ── TYPOGRAPHY ── */
-    .display {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-weight: 900;
-      line-height: 1.1;
-      letter-spacing: -0.02em;
-    }
-    .display-italic {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-weight: 700;
-      font-style: italic;
-      line-height: 1.15;
+    #progress {
+      position: fixed; top: 0; left: 0; height: 2px;
+      background: var(--gold); z-index: 1000; width: 0%;
+      transition: width 0.08s linear;
     }
 
-    /* ── LAYOUT ── */
-    .container { max-width: 680px; margin: 0 auto; padding: 0 24px; }
-    .container-wide { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+    /* REVEAL */
+    .r { opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .r.on { opacity: 1; transform: none; }
+    .d1 { transition-delay: 0.12s; }
+    .d2 { transition-delay: 0.24s; }
+    .d3 { transition-delay: 0.38s; }
+    .d4 { transition-delay: 0.52s; }
+
+    .w { max-width: 640px; margin: 0 auto; padding: 0 24px; }
 
     /* ── HERO ── */
     .hero {
       min-height: 100vh;
-      background: var(--ink);
-      display: flex; flex-direction: column;
-      justify-content: center; align-items: center;
-      text-align: center;
-      padding: 80px 24px;
-      position: relative;
-      overflow: hidden;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 100px 24px 80px;
+      max-width: 640px; margin: 0 auto;
     }
-    .hero-bg-text {
-      position: absolute; inset: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(120px, 22vw, 320px);
-      font-weight: 900;
-      color: rgba(255,255,255,0.03);
-      pointer-events: none;
-      letter-spacing: -0.04em;
-      user-select: none;
-    }
+
     .hero-eyebrow {
-      font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
       text-transform: uppercase; color: var(--gold);
-      margin-bottom: 28px; display: flex; align-items: center; gap: 12px;
+      margin-bottom: 32px;
+      display: flex; align-items: center; gap: 12px;
     }
-    .hero-eyebrow::before, .hero-eyebrow::after {
-      content: ''; display: block; width: 32px; height: 1px; background: var(--gold); opacity: 0.6;
-    }
+    .hero-eyebrow::before { content:''; width: 28px; height: 1px; background: var(--gold); opacity: 0.4; }
+
     .hero-headline {
-      font-size: clamp(36px, 6vw, 72px);
-      color: #fff;
-      margin-bottom: 24px;
-      max-width: 640px;
-    }
-    .hero-headline em {
-      font-style: italic; color: var(--gold-light);
-    }
-    .hero-sub {
-      font-size: clamp(16px, 2vw, 20px);
-      color: rgba(255,255,255,0.5);
-      max-width: 480px;
-      line-height: 1.7;
-      margin-bottom: 48px;
-    }
-    .hero-scroll {
-      display: flex; flex-direction: column; align-items: center; gap: 8px;
-      color: rgba(255,255,255,0.3); font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
-    }
-    .hero-scroll-line {
-      width: 1px; height: 48px;
-      background: linear-gradient(180deg, transparent, rgba(255,255,255,0.3));
-      animation: scrollPulse 2s ease infinite;
-    }
-    @keyframes scrollPulse { 0%,100%{opacity:0.3;transform:scaleY(1)} 50%{opacity:1;transform:scaleY(1.1)} }
-
-    /* ── CHAPTER MARKER ── */
-    .chapter {
-      display: flex; align-items: center; gap: 16px;
-      margin-bottom: 40px;
-    }
-    .chapter-num {
       font-family: 'Playfair Display', serif;
-      font-size: 48px; font-weight: 900; color: var(--gold);
-      line-height: 1; opacity: 0.4; flex-shrink: 0;
+      font-size: clamp(40px, 7.5vw, 80px);
+      font-weight: 900; line-height: 1.05;
+      letter-spacing: -0.025em; color: #fff;
+      margin-bottom: 36px;
     }
-    .chapter-line { flex: 1; height: 1px; background: var(--rule); }
-    .chapter-label {
-      font-size: 11px; font-weight: 600; color: var(--ink-muted);
-      letter-spacing: 0.12em; text-transform: uppercase;
-    }
+    .hero-headline em { font-style: italic; color: var(--gold-bright); }
 
-    /* ── STORY SECTION ── */
-    .story-section {
-      padding: 100px 0;
-      border-bottom: 1px solid var(--rule);
+    .hero-body {
+      font-size: clamp(16px, 2vw, 19px);
+      color: var(--text-soft); line-height: 1.9;
+      max-width: 560px;
     }
-    .story-section:last-of-type { border-bottom: none; }
+    .hero-body p { margin-bottom: 20px; }
+    .hero-body p:last-child { margin-bottom: 0; }
+    .hero-body strong { color: var(--text); font-weight: 600; }
+    .hero-body em { font-style: italic; color: var(--gold-bright); }
 
-    .story-headline {
-      font-size: clamp(30px, 4vw, 50px);
+    .scroll-cue {
+      margin-top: 56px;
+      display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
+    }
+    .scroll-line {
+      width: 1px; height: 52px;
+      background: linear-gradient(180deg, transparent, var(--gold));
+      animation: glow 2.4s ease infinite;
+    }
+    @keyframes glow { 0%,100%{opacity:0.25} 55%{opacity:0.9} }
+    .scroll-label { font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-muted); }
+
+    /* ── SECTIONS ── */
+    .section { padding: 80px 0; border-bottom: 1px solid var(--rule); }
+
+    .eyebrow {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 20px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .eyebrow::before { content:''; width: 14px; height: 1px; background: var(--gold); opacity: 0.45; }
+
+    .h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 4.2vw, 48px);
+      font-weight: 900; line-height: 1.15;
+      letter-spacing: -0.02em; color: #fff;
       margin-bottom: 24px;
-      color: var(--ink);
     }
-    .story-body {
-      font-size: 18px; color: var(--ink-soft);
-      line-height: 1.8; margin-bottom: 24px;
-      max-width: 600px;
-    }
-    .story-body strong { color: var(--ink); font-weight: 600; }
+    .h2 em { font-style: italic; color: var(--gold-bright); }
 
-    /* ── PULL QUOTE ── */
-    .pull-quote {
-      border-left: 3px solid var(--gold);
-      padding: 20px 28px;
-      margin: 40px 0;
-      background: rgba(200,146,42,0.04);
+    .body {
+      font-size: 17px; color: var(--text-soft);
+      line-height: 1.85; margin-bottom: 20px;
+      max-width: 580px;
+    }
+    .body strong { color: var(--text); font-weight: 600; }
+    .body em { font-style: italic; color: var(--gold-bright); }
+    .body:last-child { margin-bottom: 0; }
+
+    /* ── WARM QUOTE ── */
+    .warm-quote {
+      border-left: 2px solid rgba(212,168,67,0.4);
+      padding: 18px 24px;
+      background: var(--gold-dim);
       border-radius: 0 12px 12px 0;
+      margin: 36px 0;
     }
-    .pull-quote-text {
+    .warm-quote-text {
+      font-size: clamp(17px, 2.2vw, 21px);
+      color: rgba(255,255,255,0.8);
+      line-height: 1.65; font-style: italic;
       font-family: 'Playfair Display', serif;
-      font-size: clamp(20px, 3vw, 26px);
-      font-style: italic;
-      color: var(--ink);
-      line-height: 1.5;
-      margin-bottom: 12px;
     }
-    .pull-quote-attr { font-size: 13px; color: var(--ink-muted); font-weight: 500; }
 
-    /* ── DARK INTERLUDE ── */
-    .dark-section {
-      background: var(--ink);
-      padding: 100px 0;
-      color: #fff;
+    /* ── MOMENT CARDS ── */
+    .moments { display: flex; flex-direction: column; gap: 8px; margin: 36px 0; }
+    .moment {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 18px 20px;
+      display: flex; gap: 14px; align-items: flex-start;
     }
-    .dark-section .story-body { color: rgba(255,255,255,0.65); }
-    .dark-section .story-headline { color: #fff; }
-    .dark-section .chapter-line { background: rgba(255,255,255,0.1); }
-    .dark-section .chapter-label { color: rgba(255,255,255,0.4); }
-    .dark-section .chapter-num { color: var(--gold-light); }
+    .moment-emoji { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+    .moment-text { font-size: 14px; color: var(--text-soft); line-height: 1.7; }
+    .moment-text strong { color: var(--text); font-weight: 600; display: block; margin-bottom: 3px; font-size: 15px; }
 
-    /* ── STAT ROW ── */
-    .stat-row {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 24px; margin: 48px 0;
+    /* ── GAP CARD ── */
+    .gap-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 18px; overflow: hidden; margin: 36px 0;
     }
-    .stat-block { text-align: center; }
-    .stat-big {
+    .gap-top { padding: 14px 18px; border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.02); }
+    .gap-top-name { font-size: 14px; font-weight: 600; color: var(--text); }
+    .gap-top-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .gap-cols { display: grid; grid-template-columns: 1fr 1fr; }
+    .gap-col { padding: 16px 18px; }
+    .gap-col:first-child { border-right: 1px solid var(--border); }
+    .gap-col-hd {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; margin-bottom: 12px;
+      padding-bottom: 8px; border-bottom: 1px solid var(--border-soft);
+    }
+    .gap-col:first-child .gap-col-hd { color: rgba(248,113,113,0.8); }
+    .gap-col:last-child .gap-col-hd { color: var(--green); }
+    .gap-item { font-size: 12px; color: var(--text-soft); padding: 5px 0; line-height: 1.5; border-bottom: 1px solid var(--border-soft); }
+    .gap-item:last-child { border-bottom: none; }
+    .gap-item.g { color: var(--green); font-weight: 500; }
+    .gap-insight {
+      border-top: 1px solid var(--border); padding: 14px 18px;
+      background: var(--gold-dim);
+      font-size: 13px; color: rgba(239,196,90,0.9);
+      font-weight: 500; line-height: 1.65;
+    }
+
+    /* ── WHAT POLARIS DOES ── */
+    .what-list { display: flex; flex-direction: column; gap: 8px; margin: 36px 0; }
+    .what-item {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 18px 20px;
+      display: flex; gap: 14px; align-items: flex-start;
+    }
+    .what-icon { font-size: 22px; flex-shrink: 0; }
+    .what-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .what-desc { font-size: 13px; color: var(--text-soft); line-height: 1.7; }
+    .what-desc strong { color: var(--text); font-weight: 600; }
+
+    /* ── VOICES ── */
+    .voices { display: flex; flex-direction: column; gap: 10px; margin: 36px 0; }
+    .voice {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 18px 20px;
+    }
+    .voice-text {
+      font-size: 14px; color: var(--text-soft);
+      line-height: 1.75; font-style: italic;
+      margin-bottom: 10px;
+    }
+    .voice-text::before { content: '" '; color: var(--gold); font-style: normal; font-weight: 700; }
+    .voice-text::after { content: ' "'; color: var(--gold); font-style: normal; font-weight: 700; }
+    .voice-who { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+    .voice-who span { color: var(--gold); font-weight: 600; }
+
+    /* ── CLOSING LETTER ── */
+    .closing {
+      padding: 80px 0 0;
+      border-bottom: none;
+    }
+    .closing-text {
+      font-size: 17px; color: var(--text-soft);
+      line-height: 1.9; max-width: 580px; margin-bottom: 20px;
+    }
+    .closing-text strong { color: var(--text); font-weight: 600; }
+    .closing-text em { font-style: italic; color: var(--gold-bright); }
+    .closing-sig { margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--rule); }
+    .closing-sig-name {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(40px, 6vw, 64px);
-      font-weight: 900; color: var(--gold);
-      line-height: 1; margin-bottom: 8px;
+      font-size: 20px; font-style: italic; color: var(--text); margin-bottom: 4px;
     }
-    .stat-label { font-size: 13px; color: var(--ink-muted); font-weight: 500; line-height: 1.5; }
-    .dark-section .stat-label { color: rgba(255,255,255,0.4); }
+    .closing-sig-role { font-size: 13px; color: var(--text-muted); font-weight: 500; }
 
-    /* ── CHILD PROFILE CARD ── */
-    .child-card {
-      background: #fff;
-      border-radius: 20px;
-      border: 1px solid var(--rule);
-      overflow: hidden;
-      margin: 48px 0;
-      box-shadow: 0 4px 40px rgba(0,0,0,0.06);
+    /* ── FORM CARD ── */
+    .form-section { padding: 80px 0; }
+    .form-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 22px; padding: 36px 32px;
     }
-    .child-card-header {
-      background: var(--green);
-      padding: 24px 28px;
-      display: flex; align-items: center; gap: 16px;
+    .form-eyebrow {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 16px;
     }
-    .child-card-emoji { font-size: 48px; }
-    .child-card-name { font-size: 22px; font-weight: 700; color: #fff; }
-    .child-card-meta { font-size: 14px; color: rgba(255,255,255,0.6); margin-top: 3px; }
-    .child-card-body { padding: 24px 28px; }
-    .marks-vs-real { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .mvr-col { }
-    .mvr-col-label {
-      font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-      margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--rule);
-    }
-    .mvr-col-label.marks { color: #94a3b8; }
-    .mvr-col-label.real { color: var(--green); }
-    .mvr-item {
-      font-size: 13px; color: var(--ink-soft); padding: 6px 0;
-      border-bottom: 1px solid #f8fafc; line-height: 1.5;
-    }
-    .mvr-item.real-item { color: var(--green); font-weight: 500; }
-
-    /* ── THREE LENSES ── */
-    .lens-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin: 48px 0; }
-    .lens-card {
-      border-radius: 16px; padding: 24px;
-      border: 1px solid var(--rule);
-    }
-    .lens-icon { font-size: 28px; margin-bottom: 12px; display: block; }
-    .lens-who { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 6px; }
-    .lens-title { font-size: 17px; font-weight: 700; color: var(--ink); margin-bottom: 8px; font-family: 'Playfair Display', serif; }
-    .lens-desc { font-size: 14px; color: var(--ink-soft); line-height: 1.7; }
-    .lens-observation {
-      margin-top: 14px; background: var(--paper-mid);
-      border-radius: 10px; padding: 12px 14px;
-      font-size: 13px; color: var(--ink-soft); font-style: italic; line-height: 1.6;
-    }
-
-    /* ── HOW IT WORKS TIMELINE ── */
-    .timeline { margin: 48px 0; display: flex; flex-direction: column; gap: 0; }
-    .timeline-step { display: flex; gap: 20px; padding-bottom: 32px; position: relative; }
-    .timeline-step:last-child { padding-bottom: 0; }
-    .timeline-left { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
-    .timeline-circle {
-      width: 40px; height: 40px; border-radius: 50%;
-      background: var(--green); display: flex; align-items: center; justify-content: center;
-      font-size: 16px; flex-shrink: 0; position: relative; z-index: 1;
-    }
-    .timeline-line {
-      width: 1px; flex: 1; background: var(--rule); margin-top: 4px;
-    }
-    .timeline-step:last-child .timeline-line { display: none; }
-    .timeline-content { flex: 1; padding-top: 8px; }
-    .timeline-title { font-size: 16px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
-    .timeline-desc { font-size: 14px; color: var(--ink-soft); line-height: 1.6; }
-    .timeline-who { font-size: 11px; font-weight: 600; color: var(--green); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
-
-    /* ── CONTRAST REVEAL ── */
-    .contrast-block {
-      border-radius: 16px; overflow: hidden; margin: 48px 0;
-      border: 1px solid var(--rule);
-    }
-    .contrast-row { display: grid; grid-template-columns: 1fr 1fr; }
-    .contrast-col { padding: 24px; }
-    .contrast-col.home { background: #fffbeb; border-right: 1px solid var(--rule); }
-    .contrast-col.school { background: #eff6ff; }
-    .contrast-col-label {
-      font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
-      margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid rgba(0,0,0,0.08);
-    }
-    .contrast-col.home .contrast-col-label { color: #92400e; }
-    .contrast-col.school .contrast-col-label { color: #1d4ed8; }
-    .contrast-item { font-size: 13px; line-height: 1.5; padding: 5px 0; color: var(--ink-soft); border-bottom: 1px solid rgba(0,0,0,0.04); }
-    .contrast-item:last-child { border-bottom: none; }
-    .contrast-insight {
-      background: var(--green); padding: 16px 24px;
-      display: flex; gap: 12px; align-items: flex-start;
-    }
-    .contrast-insight-icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
-    .contrast-insight-text { font-size: 14px; color: #fff; line-height: 1.6; font-weight: 500; }
-
-    /* ── BIG QUOTE SECTION ── */
-    .big-quote-section {
-      background: var(--green);
-      padding: 100px 24px;
-      text-align: center;
-    }
-    .big-quote-text {
+    .form-headline {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(24px, 4vw, 42px);
-      font-style: italic;
-      color: #fff;
-      line-height: 1.4;
-      max-width: 640px;
-      margin: 0 auto 24px;
+      font-size: clamp(22px, 3.2vw, 34px);
+      font-weight: 900; color: #fff;
+      line-height: 1.2; margin-bottom: 14px;
     }
-    .big-quote-attr { font-size: 14px; color: rgba(255,255,255,0.5); font-weight: 500; letter-spacing: 0.04em; }
-    .big-quote-star { font-size: 32px; margin-bottom: 24px; display: block; opacity: 0.6; }
+    .form-body {
+      font-size: 15px; color: var(--text-soft);
+      line-height: 1.8; margin-bottom: 24px;
+    }
+    .form-body strong { color: var(--text); font-weight: 600; }
 
-    /* ── CTA SECTION ── */
-    .cta-section { padding: 100px 0; text-align: center; }
-    .cta-headline { font-size: clamp(28px, 4vw, 48px); margin-bottom: 20px; color: var(--ink); }
-    .cta-body { font-size: 18px; color: var(--ink-muted); max-width: 480px; margin: 0 auto 40px; line-height: 1.7; }
-    .cta-actions { display: flex; flex-direction: column; align-items: center; gap: 12px; }
-    .cta-btn-primary {
-      background: var(--ink); color: #fff;
-      border: none; border-radius: 50px; padding: 16px 36px;
-      font-size: 15px; font-weight: 600; cursor: pointer;
-      font-family: 'Inter', sans-serif; letter-spacing: 0.02em;
-      text-decoration: none; display: inline-block;
+    .time-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--green-dim); border: 1px solid rgba(52,211,153,0.2);
+      border-radius: 20px; padding: 5px 14px;
+      font-size: 12px; font-weight: 700; color: var(--green);
+      margin-bottom: 22px;
+    }
+
+    .form-preview {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border-soft);
+      border-radius: 12px; padding: 16px 18px; margin-bottom: 24px;
+    }
+    .form-preview-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px;
+    }
+    .form-qs { display: flex; flex-direction: column; gap: 9px; }
+    .form-q {
+      font-size: 13px; color: var(--text-soft);
+      display: flex; gap: 10px; align-items: flex-start; line-height: 1.55;
+    }
+    .form-q::before { content:'→'; color: var(--gold); flex-shrink: 0; font-weight: 700; font-size: 12px; margin-top: 1px; }
+
+    .form-btn {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; background: var(--gold); color: #080808;
+      border: none; border-radius: 50px; padding: 16px 32px;
+      font-size: 15px; font-weight: 700; cursor: pointer;
+      font-family: 'Inter', sans-serif; text-decoration: none;
       transition: transform 0.15s, box-shadow 0.15s;
+      margin-bottom: 14px; letter-spacing: 0.02em;
     }
-    .cta-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
-    .cta-btn-secondary {
-      font-size: 14px; color: var(--ink-muted); font-weight: 500;
-      text-decoration: underline; cursor: pointer; background: none; border: none;
-      font-family: 'Inter', sans-serif;
+    .form-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(212,168,67,0.3); }
+
+    .form-note {
+      font-size: 13px; color: var(--text-muted);
+      text-align: center; line-height: 1.7;
     }
-    .cta-contact { font-size: 14px; color: var(--ink-muted); margin-top: 32px; line-height: 1.7; }
-    .cta-contact strong { color: var(--ink); }
+    .form-note strong { color: var(--text-soft); }
 
     /* ── FOOTER ── */
     .footer {
-      border-top: 1px solid var(--rule);
-      padding: 32px 24px;
+      border-top: 1px solid var(--rule); padding: 24px;
       display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 12px;
+      flex-wrap: wrap; gap: 10px;
     }
     .footer-brand { display: flex; align-items: center; gap: 8px; }
-    .footer-star { font-size: 16px; color: var(--gold); }
-    .footer-name { font-size: 14px; font-weight: 700; color: var(--ink); letter-spacing: 0.06em; }
-    .footer-tagline { font-size: 12px; color: var(--ink-muted); }
+    .footer-star { color: var(--gold); font-size: 14px; }
+    .footer-name { font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 0.1em; }
+    .footer-line { font-size: 12px; color: var(--text-muted); }
 
-    /* ── DIVIDER ── */
-    .section-rule { border: none; border-top: 1px solid var(--rule); }
-
-    /* ── MOBILE ── */
-    @media (max-width: 600px) {
-      .stat-row { grid-template-columns: 1fr; gap: 32px; }
-      .marks-vs-real { grid-template-columns: 1fr; gap: 24px; }
-      .contrast-row { grid-template-columns: 1fr; }
-      .contrast-col.home { border-right: none; border-bottom: 1px solid var(--rule); }
-    }
-
-    /* ── PROGRESS BAR ── */
-    .reading-progress {
-      position: fixed; top: 0; left: 0; height: 2px;
-      background: var(--gold); z-index: 1000;
-      transition: width 0.1s linear;
-      width: 0%;
+    @media (max-width: 500px) {
+      .gap-cols { grid-template-columns: 1fr; }
+      .gap-col:first-child { border-right: none; border-bottom: 1px solid var(--border); }
+      .form-card { padding: 24px 18px; }
     }
   </style>
 </head>
 <body>
 
-<div class="reading-progress" id="progress"></div>
+<div id="progress"></div>
 
 <!-- ══════════ HERO ══════════ -->
-<section class="hero">
-  <div class="hero-bg-text">✦</div>
-  <div class="hero-eyebrow reveal">Introducing Polaris</div>
-  <h1 class="hero-headline display reveal reveal-delay-1">
-    Every child is <em>more</em><br/>than their marks.
-  </h1>
-  <p class="hero-sub reveal reveal-delay-2">
-    A new way to understand, support, and celebrate the whole child — not just the student who shows up on a report card.
-  </p>
-  <div class="hero-scroll reveal reveal-delay-3">
-    <div class="hero-scroll-line"></div>
-    <span>Read the story</span>
-  </div>
-</section>
+<div class="w">
+  <div class="hero">
+    <div class="hero-eyebrow r">A note from the Polaris team</div>
 
-<!-- ══════════ CHAPTER 1 — THE CHILD ══════════ -->
-<section class="story-section">
-  <div class="container">
-    <div class="chapter reveal">
-      <div class="chapter-num">1</div>
-      <div class="chapter-line"></div>
-      <div class="chapter-label">The Child</div>
+    <h1 class="hero-headline r d1">
+      You were ready.<br/>Just not for<br/><em>this.</em>
+    </h1>
+
+    <div class="hero-body r d2">
+      <p>
+        You studied hard. You cleared the exams. You made it into college or your first job. And then something hit you that nobody had warned you about.
+      </p>
+      <p>
+        Not a subject you hadn't studied. Something harder to name. The group discussion where everyone else just jumped in. The moment your manager asked your opinion and your mind went blank. The interview question — <em>"tell me about yourself"</em> — that stopped you cold.
+      </p>
+      <p>
+        You had the knowledge. <strong>You just hadn't been given the tools to be in that room.</strong>
+      </p>
+      <p>
+        We've been talking to a lot of people about this. And almost everyone has a version of this story. Which tells us something important — <strong>this was never about you. It was about a gap in how we were all prepared.</strong>
+      </p>
     </div>
 
-    <h2 class="story-headline display reveal">
-      Meet Rohit.<br/>He's 12 years old.
-    </h2>
-
-    <p class="story-body reveal reveal-delay-1">
-      He lives in a small town in Bihar with his parents, three sisters, and a household full of noise, laughter, and cricket matches in the lane outside.
-    </p>
-    <p class="story-body reveal reveal-delay-2">
-      His father runs a shop. His mother manages everything at home. They sacrifice quietly every month to pay his school fees — because they believe, with everything they have, that <strong>education is the way out and the way up.</strong>
-    </p>
-
-    <div class="child-card reveal">
-      <div class="child-card-header">
-        <div class="child-card-emoji">🧒</div>
-        <div>
-          <div class="child-card-name">Rohit</div>
-          <div class="child-card-meta">Age 12 · Class 7 · Bihar</div>
-        </div>
-      </div>
-      <div class="child-card-body">
-        <div class="marks-vs-real">
-          <div class="mvr-col">
-            <div class="mvr-col-label marks">What his marks show</div>
-            <div class="mvr-item">Science: 72%</div>
-            <div class="mvr-item">Mathematics: 68%</div>
-            <div class="mvr-item">English: 61%</div>
-            <div class="mvr-item">Average student</div>
-          </div>
-          <div class="mvr-col">
-            <div class="mvr-col-label real">What his marks miss</div>
-            <div class="mvr-item real-item">Teaches his family complex topics</div>
-            <div class="mvr-item real-item">Asks questions nobody else thinks to ask</div>
-            <div class="mvr-item real-item">Keeps his team positive after a loss</div>
-            <div class="mvr-item real-item">Natural communicator at home</div>
-          </div>
-        </div>
-      </div>
+    <div class="scroll-cue r d3">
+      <div class="scroll-line"></div>
+      <div class="scroll-label">Keep reading</div>
     </div>
-
-    <p class="story-body reveal">
-      His parents measure his progress through one number: his exam score. It goes up — relief. It goes down — anxiety. <strong>Everything in between is invisible.</strong>
-    </p>
-
-    <div class="pull-quote reveal">
-      <div class="pull-quote-text">"The real Rohit — the curious, caring, resilient Rohit — never appears on a single report card."</div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════ CHAPTER 2 — THE GAP ══════════ -->
-<section class="story-section dark-section">
-  <div class="container">
-    <div class="chapter reveal">
-      <div class="chapter-num">2</div>
-      <div class="chapter-line"></div>
-      <div class="chapter-label">The Gap</div>
-    </div>
-
-    <h2 class="story-headline display reveal">
-      Something is missing.<br/>And we all feel it.
-    </h2>
-
-    <p class="story-body reveal reveal-delay-1">
-      Every year, thousands of children from Bihar and towns like it go out into the world — to colleges in Pune, companies in Bengaluru, opportunities in Delhi. They are academically prepared. Many are brilliant.
-    </p>
-    <p class="story-body reveal reveal-delay-2">
-      But they arrive underprepared for something nobody warned them about. Not the subjects. <strong>The unwritten rules of confidence, communication, and self-awareness.</strong> The soft skills that every room rewards and no classroom ever taught.
-    </p>
-
-    <div class="stat-row reveal">
-      <div class="stat-block">
-        <div class="stat-big">18</div>
-        <div class="stat-label">Years old before most children get feedback on who they are, not just what they scored</div>
-      </div>
-      <div class="stat-block">
-        <div class="stat-big">1</div>
-        <div class="stat-label">Signal most parents have to measure their child's growth — exam marks</div>
-      </div>
-      <div class="stat-block">
-        <div class="stat-big">0</div>
-        <div class="stat-label">Tools today that connect what a child does at home with what a teacher sees in class</div>
-      </div>
-    </div>
-
-    <p class="story-body reveal">
-      This gap is not the child's fault. It is not the parent's fault. It is not the teacher's fault. <strong>It is a system that was never designed to see the whole child.</strong>
-    </p>
-
-    <div class="pull-quote reveal" style="border-color: var(--gold-light); background: rgba(240,217,138,0.08);">
-      <div class="pull-quote-text" style="color:#fff;">"We have been producing excellent students who become uncertain adults — not because they lacked ability, but because nobody ever helped them see it."</div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════ CHAPTER 3 — THREE LENSES ══════════ -->
-<section class="story-section">
-  <div class="container">
-    <div class="chapter reveal">
-      <div class="chapter-num">3</div>
-      <div class="chapter-line"></div>
-      <div class="chapter-label">The Insight</div>
-    </div>
-
-    <h2 class="story-headline display reveal">
-      One child.<br/>Three different truths.
-    </h2>
-
-    <p class="story-body reveal reveal-delay-1">
-      The most important insight in child development is hiding in plain sight. <strong>The child at home and the child in school are not the same child.</strong> And neither version is complete.
-    </p>
-    <p class="story-body reveal reveal-delay-2">
-      Rohit explains cricket rules to his entire family with confidence and joy. The same Rohit sits in the back of class and never raises his hand. Both are real. Neither tells the whole story.
-    </p>
-
-    <div class="contrast-block reveal">
-      <div class="contrast-row">
-        <div class="contrast-col home">
-          <div class="contrast-col-label">🏠 Rohit at Home — Pushpa ji sees</div>
-          <div class="contrast-item">Teaches family confidently</div>
-          <div class="contrast-item">Asks deep questions daily</div>
-          <div class="contrast-item">Helps younger sister without being asked</div>
-          <div class="contrast-item">Keeps friends positive after cricket loss</div>
-        </div>
-        <div class="contrast-col school">
-          <div class="contrast-col-label">🏫 Rohit in Class — Priya Ma'am sees</div>
-          <div class="contrast-item">Quiet during group discussions</div>
-          <div class="contrast-item">Rarely volunteers answers</div>
-          <div class="contrast-item">Engaged but hesitant to speak</div>
-          <div class="contrast-item">Knows more than he shows</div>
-        </div>
-      </div>
-      <div class="contrast-insight">
-        <div class="contrast-insight-icon">✦</div>
-        <div class="contrast-insight-text"><strong>Polaris Insight:</strong> Rohit communicates confidently in familiar environments but needs a safe, low-pressure speaking opportunity in class. Consider giving him a small presenting role this week.</div>
-      </div>
-    </div>
-
-    <p class="story-body reveal">
-      Today, these two versions of Rohit never meet. His teacher doesn't know what Pushpa ji sees. His mother doesn't know what happens in class. <strong>Polaris is the bridge.</strong>
-    </p>
-  </div>
-</section>
-
-<!-- ══════════ CHAPTER 4 — HOW IT WORKS ══════════ -->
-<section class="story-section" style="background: var(--paper-mid);">
-  <div class="container">
-    <div class="chapter reveal">
-      <div class="chapter-num">4</div>
-      <div class="chapter-line"></div>
-      <div class="chapter-label">How It Works</div>
-    </div>
-
-    <h2 class="story-headline display reveal">
-      Simple for everyone.<br/>Powerful for the child.
-    </h2>
-
-    <p class="story-body reveal reveal-delay-1">
-      Polaris works quietly in the background of everyday life. No long forms. No complicated dashboards. Just small, consistent moments of observation and celebration — that together build a complete picture of a child's growth.
-    </p>
-
-    <div class="timeline reveal">
-      <div class="timeline-step">
-        <div class="timeline-left">
-          <div class="timeline-circle">🧒</div>
-          <div class="timeline-line"></div>
-        </div>
-        <div class="timeline-content">
-          <div class="timeline-who">The Child</div>
-          <div class="timeline-title">Rohit completes an adventure</div>
-          <div class="timeline-desc">He teaches his family about cricket rules — something he knows deeply and loves. He picks how he felt (proud!) and writes two sentences about what happened.</div>
-        </div>
-      </div>
-      <div class="timeline-step">
-        <div class="timeline-left">
-          <div class="timeline-circle">👩</div>
-          <div class="timeline-line"></div>
-        </div>
-        <div class="timeline-content">
-          <div class="timeline-who">The Parent</div>
-          <div class="timeline-title">Pushpa ji sees his reflection</div>
-          <div class="timeline-desc">She reads exactly what Rohit wrote. She sends him appreciation — "Rohit, we are so proud of you!" — and asks him one question. He sees it when he opens his app.</div>
-        </div>
-      </div>
-      <div class="timeline-step">
-        <div class="timeline-left">
-          <div class="timeline-circle">👩‍🏫</div>
-          <div class="timeline-line"></div>
-        </div>
-        <div class="timeline-content">
-          <div class="timeline-who">The Teacher</div>
-          <div class="timeline-title">Priya Ma'am records what she sees in class</div>
-          <div class="timeline-desc">Independently — without seeing the parent's view first. She notices Rohit is quiet in group discussions. She adds her professional perspective and a question for him.</div>
-        </div>
-      </div>
-      <div class="timeline-step">
-        <div class="timeline-left">
-          <div class="timeline-circle">✦</div>
-        </div>
-        <div class="timeline-content">
-          <div class="timeline-who">Polaris</div>
-          <div class="timeline-title">The two views come together</div>
-          <div class="timeline-desc">Polaris surfaces the contrast — confident at home, quiet in class — and gives Priya Ma'am a specific, actionable suggestion: give Rohit a small presenting opportunity this week. The gap becomes guidance.</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="lens-grid reveal">
-      <div class="lens-card" style="background:#fff;border-color:#e8f4ed;">
-        <span class="lens-icon">🧒</span>
-        <div class="lens-who">For the Child</div>
-        <div class="lens-title">An adventure, not a test</div>
-        <div class="lens-desc">Rohit doesn't feel evaluated. He feels seen. Every completed adventure earns him stars. Every reflection earns him his parent's appreciation. <strong>Confidence is built, not taught.</strong></div>
-      </div>
-      <div class="lens-card" style="background:#fff;border-color:#fef3c7;">
-        <span class="lens-icon">👩</span>
-        <div class="lens-who">For the Parent</div>
-        <div class="lens-title">A richer instrument</div>
-        <div class="lens-desc">Pushpa ji gets one warm recommendation each morning — one real thing she can do today to help Rohit grow. Not a report card. Not anxiety. <strong>Just clear, caring guidance.</strong></div>
-      </div>
-      <div class="lens-card" style="background:#fff;border-color:#eff6ff;">
-        <span class="lens-icon">👩‍🏫</span>
-        <div class="lens-who">For the Teacher</div>
-        <div class="lens-title">A second pair of eyes</div>
-        <div class="lens-desc">Priya Ma'am doesn't see parents' observations before recording her own — keeping her view unbiased. Then Polaris brings both views together, surfacing insights <strong>no single observer could find alone.</strong></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════════ BIG QUOTE ══════════ -->
-<div class="big-quote-section">
-  <div class="container" style="text-align:center;">
-    <span class="big-quote-star reveal">✦</span>
-    <div class="big-quote-text reveal reveal-delay-1">
-      "Aapka beta kal yahan se bahar ja kar sirf naukri nahi — ek leader banega."
-    </div>
-    <div class="big-quote-attr reveal reveal-delay-2">Your child will not just get a job when they leave here. They will become a leader.</div>
   </div>
 </div>
 
-<!-- ══════════ CHAPTER 5 — WHAT POLARIS BELIEVES ══════════ -->
-<section class="story-section">
-  <div class="container">
-    <div class="chapter reveal">
-      <div class="chapter-num">5</div>
-      <div class="chapter-line"></div>
-      <div class="chapter-label">What We Believe</div>
-    </div>
+<hr style="border:none;border-top:1px solid var(--rule);"/>
 
-    <h2 class="story-headline display reveal">
-      Not a report card.<br/>A development journey.
-    </h2>
+<!-- ══════════ THE MOMENTS ══════════ -->
+<section class="section">
+  <div class="w">
+    <div class="eyebrow r">Sound Familiar?</div>
+    <h2 class="h2 r d1">The moments<br/>nobody prepared<br/>us for.</h2>
 
-    <p class="story-body reveal reveal-delay-1">
-      Polaris does not score children. It does not rank them. It does not produce a number that follows them for life.
-    </p>
-    <p class="story-body reveal reveal-delay-2">
-      What Polaris produces is something far more valuable — <strong>evidence of who this child is becoming</strong>, drawn from the people who know them best, in the contexts where they actually live.
+    <p class="body r d2">
+      Some experiences hit differently when you first leave home. You'd done everything right — studied, prepared, worked hard. And yet certain moments still caught you completely off guard.
     </p>
 
-    <div class="pull-quote reveal">
-      <div class="pull-quote-text">Every child has a version of themselves that marks cannot measure. Polaris exists to make that version visible — to the child, to their parents, and to the teachers who shape them.</div>
+    <div class="moments r">
+      <div class="moment">
+        <div class="moment-emoji">🎤</div>
+        <div class="moment-text">
+          <strong>The presentation you weren't ready for</strong>
+          You knew the content. But standing up, owning the room, making people listen — that was an entirely different skill. One that nobody had ever helped you practise.
+        </div>
+      </div>
+      <div class="moment">
+        <div class="moment-emoji">💬</div>
+        <div class="moment-text">
+          <strong>The opinion you swallowed</strong>
+          You had something worth saying. But years of staying quiet in classrooms — where speaking up uninvited felt risky — made silence feel safer than it should have.
+        </div>
+      </div>
+      <div class="moment">
+        <div class="moment-emoji">🤝</div>
+        <div class="moment-text">
+          <strong>The room full of strangers</strong>
+          Everyone else seemed to know how to walk in, introduce themselves, become memorable. You stood near the wall and waited for someone to come to you.
+        </div>
+      </div>
+      <div class="moment">
+        <div class="moment-emoji">🪞</div>
+        <div class="moment-text">
+          <strong>The "tell me about yourself"</strong>
+          Three words. Eighteen years of preparation — and somehow, nobody had ever helped you answer this. Not because you didn't know yourself. Because nobody had asked.
+        </div>
+      </div>
     </div>
 
-    <p class="story-body reveal">
-      Over time, this evidence becomes a Development Passport — a living record of growth that travels with the child. Not what they scored. <strong>Who they became.</strong>
+    <div class="warm-quote r">
+      <div class="warm-quote-text">These weren't failures. They were the natural result of a preparation that was almost complete — but missing something important.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ THE REAL GAP ══════════ -->
+<section class="section">
+  <div class="w">
+    <div class="eyebrow r">What Was Missing</div>
+    <h2 class="h2 r d1">It wasn't<br/>more knowledge.<br/>It was <em>knowing yourself.</em></h2>
+
+    <p class="body r d2">
+      The people who adapted quickly in college or at work — think about what was actually different about them. It probably wasn't their marks. It was something harder to pin down.
+    </p>
+    <p class="body r d2">
+      They seemed to know who they were. They could describe their strengths without sounding arrogant. They handled feedback without falling apart. They recovered from failure without disappearing. <strong>They had a relationship with themselves that most of us were never helped to build.</strong>
+    </p>
+
+    <div class="gap-card r">
+      <div class="gap-top">
+        <div class="gap-top-name">A student — could be anyone. Could be you at 12.</div>
+        <div class="gap-top-sub">Two pictures of the same child. Both true. Neither complete.</div>
+      </div>
+      <div class="gap-cols">
+        <div class="gap-col">
+          <div class="gap-col-hd">📋 What the system recorded</div>
+          <div class="gap-item">Science: 72%</div>
+          <div class="gap-item">Maths: 68%</div>
+          <div class="gap-item">English: 61%</div>
+          <div class="gap-item">"Quiet in class"</div>
+          <div class="gap-item">"Average student"</div>
+        </div>
+        <div class="gap-col">
+          <div class="gap-col-hd">✦ What nobody recorded</div>
+          <div class="gap-item g">Explains complex things to family — clearly, patiently</div>
+          <div class="gap-item g">Asks questions nobody else thinks to ask</div>
+          <div class="gap-item g">Keeps friends positive after a loss</div>
+          <div class="gap-item g">Helps others without being asked</div>
+          <div class="gap-item g">Natural communicator — in the right setting</div>
+        </div>
+      </div>
+      <div class="gap-insight">
+        ✦ This child had everything it takes to lead. But the system only kept score on one column. The other column — the one that actually shapes a life — went unrecorded for 18 years.
+      </div>
+    </div>
+
+    <p class="body r">
+      The gap wasn't intelligence. It was that <strong>nobody ever held up a mirror</strong> and showed this child what they were already capable of — before they needed to know it under pressure, alone, in a strange city.
     </p>
   </div>
 </section>
 
-<!-- ══════════ CTA ══════════ -->
-<section class="cta-section">
-  <div class="container">
-    <div class="chapter reveal" style="justify-content:center; margin-bottom:32px;">
-      <div class="chapter-line" style="max-width:60px;"></div>
-      <div class="chapter-label">Be Part of This</div>
-      <div class="chapter-line" style="max-width:60px;"></div>
-    </div>
+<!-- ══════════ WHAT POLARIS IS ══════════ -->
+<section class="section">
+  <div class="w">
+    <div class="eyebrow r">What We're Building</div>
+    <h2 class="h2 r d1">A system that sees<br/>the <em>whole child.</em><br/>Starting early.</h2>
 
-    <h2 class="cta-headline display reveal">
-      We're looking for<br/>our first families.
-    </h2>
-
-    <p class="cta-body reveal reveal-delay-1">
-      We are starting small — with a handful of families and teachers in Bihar who believe, as we do, that every child deserves to be seen fully. If that is you, we would love to talk.
+    <p class="body r d2">
+      Polaris is a child development platform for children aged 8 to 14. It works alongside parents, teachers, and the child themselves — not to add pressure, but to surface what's already there and build on it before it's needed.
+    </p>
+    <p class="body r d2">
+      Not extra coaching. Not personality workshops. <strong>Small, consistent moments of observation and recognition — from the people who already know the child best.</strong>
     </p>
 
-    <div class="cta-actions reveal reveal-delay-2">
-      <a href="mailto:hello@polarisapp.in" class="cta-btn-primary">I want to be involved</a>
-      <button class="cta-btn-secondary" onclick="document.querySelector('.hero').scrollIntoView({behavior:'smooth'})">Read again from the beginning</button>
+    <div class="what-list r">
+      <div class="what-item">
+        <div class="what-icon">🧒</div>
+        <div>
+          <div class="what-title">The child gets real experiences, not more tests</div>
+          <div class="what-desc">Adventures that build communication, curiosity, and leadership through doing — not memorising. Each one followed by a simple reflection and <strong>genuine recognition from their family.</strong></div>
+        </div>
+      </div>
+      <div class="what-item">
+        <div class="what-icon">👨‍👩‍👧</div>
+        <div>
+          <div class="what-title">Parents see more than marks</div>
+          <div class="what-desc">A warm daily insight into their child's growth — with one specific thing they can do today to help. Not anxiety. <strong>Not a report card. Guidance.</strong></div>
+        </div>
+      </div>
+      <div class="what-item">
+        <div class="what-icon">👩‍🏫</div>
+        <div>
+          <div class="what-title">Teachers connect what they see in class with what happens at home</div>
+          <div class="what-desc">Polaris surfaces the contrast — confident at home, quiet in class — and turns that into a <strong>specific, actionable suggestion</strong> for the next lesson.</div>
+        </div>
+      </div>
+      <div class="what-item">
+        <div class="what-icon">✦</div>
+        <div>
+          <div class="what-title">The child builds a picture of who they are</div>
+          <div class="what-desc">Over time — not a report card, but a <strong>Development Passport.</strong> Evidence of strengths, growth, and self-awareness that travels with them. Built from age 9, not discovered at 21.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ VOICES ══════════ -->
+<section class="section">
+  <div class="w">
+    <div class="eyebrow r">What We Keep Hearing</div>
+    <h2 class="h2 r d1">You are not<br/>alone in this.</h2>
+
+    <p class="body r d2">
+      We've been listening — to students, to people in their first jobs, to anyone willing to share an honest memory. The same themes come up again and again, regardless of where someone is from.
+    </p>
+
+    <div class="voices r">
+      <div class="voice">
+        <div class="voice-text">I was a topper. But in my first group discussion at college, I completely froze. Everyone else just — talked. I felt like I'd missed a class that everyone else attended.</div>
+        <div class="voice-who">Engineering student, first year — <span>moved cities for college</span></div>
+      </div>
+      <div class="voice">
+        <div class="voice-text">My manager asked what I thought in a meeting. I had a real opinion. But years of being told to listen to seniors didn't go away in three months.</div>
+        <div class="voice-who">First job — <span>IT company, new city</span></div>
+      </div>
+      <div class="voice">
+        <div class="voice-text">I watched people who scored less than me get noticed faster. They weren't smarter. They knew how to be in the room. Where did they learn that?</div>
+        <div class="voice-who">Two years into career — <span>still figuring it out</span></div>
+      </div>
+      <div class="voice">
+        <div class="voice-text">I wish someone had told me at 10 — your marks are not your personality. You are more than your rank. I needed to hear that before I needed to prove it.</div>
+        <div class="voice-who">Final year student — <span>first time living away from family</span></div>
+      </div>
     </div>
 
-    <div class="cta-contact reveal reveal-delay-3">
-      Or simply reach out directly — <strong>Ashay</strong><br/>
-      We are building this because we lived it.<br/>
-      <span style="color:var(--green);font-weight:600;">Every conversation shapes what Polaris becomes.</span>
+    <div class="warm-quote r">
+      <div class="warm-quote-text">Every one of these people had what it takes. The gap was never ability. It was that nobody helped them see it early enough to build on it.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CLOSING LETTER ══════════ -->
+<section class="section closing">
+  <div class="w">
+    <div class="eyebrow r">Why We're Asking</div>
+    <h2 class="h2 r d1">Your experience<br/>is the foundation<br/>we build on.</h2>
+
+    <div class="closing-text r d2">
+      <p>We are not building Polaris in a conference room with a whiteboard. We are building it from real stories — the specific memories of people who felt this gap and can describe exactly what it cost them.</p>
+      <p>What you experienced isn't just a personal story. It's data. It tells us which skills matter most, which moments are most formative, and what a child needs to hear — and when — to arrive ready.</p>
+      <p><strong>If you are willing to share even one honest memory, you are directly shaping what the next generation of children gets to experience.</strong> That is not a small thing.</p>
+      <p>We have a short form — seven questions, under three minutes. No right or wrong answers. The more honest and specific you are, the more useful it becomes. <em>Someone from our team will personally follow up with anyone who'd like to talk more.</em></p>
+    </div>
+
+    <div class="closing-sig r d3">
+      <div class="closing-sig-name">The Polaris Team</div>
+      <div class="closing-sig-role">Building the development system we all deserved at 9.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FORM ══════════ -->
+<section class="form-section">
+  <div class="w">
+    <div class="form-card r">
+      <div class="form-eyebrow">✦ Share Your Story</div>
+      <h3 class="form-headline">7 questions.<br/>Under 3 minutes.<br/>Your honest experience.</h3>
+      <div class="form-body">
+        No sales pitch. No follow-up you didn't ask for. Just a short set of questions about what you actually went through — and what you wish had been different. <strong>The most specific answers are the most valuable ones.</strong>
+      </div>
+
+      <div class="time-pill">⏱ Under 3 minutes</div>
+
+      <div class="form-preview">
+        <div class="form-preview-label">What we'll ask you</div>
+        <div class="form-qs">
+          <div class="form-q">Where you are right now — college, first job, or between things</div>
+          <div class="form-q">One specific moment when you felt unprepared — not for an exam, but as a person in a room</div>
+          <div class="form-q">One skill you wish school had helped you build years earlier</div>
+          <div class="form-q">What was different about people who seemed to adapt easily</div>
+          <div class="form-q">Whether starting earlier would have genuinely changed something for you</div>
+          <div class="form-q">Whether you'd be open to a short conversation — no pressure either way</div>
+        </div>
+      </div>
+
+      <a href="https://form.typeform.com/to/ciQoVDOk" target="_blank" class="form-btn">
+        Share My Experience →
+      </a>
+
+      <div class="form-note">
+        If you say yes to a conversation — <strong>someone from our team</strong> will reach out personally.<br/>
+        We read every response ourselves. Every one.
+      </div>
     </div>
   </div>
 </section>
@@ -695,33 +583,26 @@
     <span class="footer-star">✦</span>
     <span class="footer-name">POLARIS</span>
   </div>
-  <div class="footer-tagline">Every child is more than their marks.</div>
+  <div class="footer-line">Every child is more than their marks.</div>
 </footer>
 
 <script>
-  /* ── READING PROGRESS ── */
   window.addEventListener('scroll', () => {
-    const doc = document.documentElement;
-    const scrolled = doc.scrollTop / (doc.scrollHeight - doc.clientHeight);
-    document.getElementById('progress').style.width = (scrolled * 100) + '%';
-  });
+    const d = document.documentElement;
+    document.getElementById('progress').style.width =
+      (d.scrollTop / (d.scrollHeight - d.clientHeight) * 100) + '%';
+  }, { passive: true });
 
-  /* ── REVEAL ON SCROLL ── */
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
+  const obs = new IntersectionObserver(entries => {
     entries.forEach(e => {
-      if(e.isIntersecting) {
-        e.target.classList.add('visible');
-        observer.unobserve(e.target);
-      }
+      if(e.isIntersecting) { e.target.classList.add('on'); obs.unobserve(e.target); }
     });
-  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  }, { threshold: 0.1, rootMargin: '0px 0px -24px 0px' });
 
-  reveals.forEach(r => observer.observe(r));
+  document.querySelectorAll('.r').forEach(el => obs.observe(el));
 
-  /* ── HERO IMMEDIATE REVEAL ── */
-  document.querySelectorAll('.hero .reveal').forEach((el, i) => {
-    setTimeout(() => el.classList.add('visible'), 300 + i * 200);
+  document.querySelectorAll('.hero .r').forEach((el, i) => {
+    setTimeout(() => el.classList.add('on'), 180 + i * 170);
   });
 </script>
 </body>
